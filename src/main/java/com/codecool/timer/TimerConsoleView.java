@@ -22,6 +22,11 @@ public class TimerConsoleView implements TimerView {
     }
 
     @Override
+    public void displayTimerCreated(String name) {
+        System.out.println("Timer with name: " + name + " successfully created!");
+    }
+
+    @Override
     public void displayTimersData(List<Timer> timers) {
         for (Timer timer : timers) {
             System.out.println(timer);

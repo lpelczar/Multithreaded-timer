@@ -92,6 +92,7 @@ class TimerController {
             }
         } else {
             createNewTimer(timerName);
+            timerView.displayTimerCreated(timerName);
         }
     }
 
