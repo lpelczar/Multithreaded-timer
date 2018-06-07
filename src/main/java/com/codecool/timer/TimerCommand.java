@@ -5,7 +5,8 @@ public enum TimerCommand {
     START("start"),
     STOP("stop"),
     EXIT("exit"),
-    CHECK("check");
+    CHECK("check"),
+    HINT("c");
 
     private final String label;
 

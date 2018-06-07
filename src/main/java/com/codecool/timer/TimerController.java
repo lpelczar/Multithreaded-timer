@@ -22,7 +22,9 @@ class TimerController {
         while (isAppRunning) {
             command = timerView.getCommand();
 
-            if (command.trim().equalsIgnoreCase(TimerCommand.EXIT.toString())) {
+            if (command.trim().equalsIgnoreCase(TimerCommand.HINT.toString())) {
+                timerView.displayPossibleOptions();
+            } else if (command.trim().equalsIgnoreCase(TimerCommand.EXIT.toString())) {
                 isAppRunning = false;
             } else if (command.trim().equalsIgnoreCase(TimerCommand.CHECK.toString())) {
                 timerView.displayTimersData(timers);

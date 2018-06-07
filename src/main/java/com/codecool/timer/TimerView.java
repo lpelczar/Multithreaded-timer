@@ -10,4 +10,5 @@ public interface TimerView {
     void displayNoSuchTimerError();
     void displayTimerWithThatNameIsAlreadyRunningError();
     void displayTimerStartedMessage(String name);
+    void displayPossibleOptions();
 }

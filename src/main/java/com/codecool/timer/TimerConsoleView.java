@@ -7,8 +7,18 @@ public class TimerConsoleView implements TimerView {
 
     @Override
     public String getCommand() {
-        System.out.println("Enter command.");
+        System.out.print("Enter command (or 'c' to show all possible commands'): ");
         return new Scanner(System.in).nextLine();
+    }
+
+    @Override
+    public void displayPossibleOptions() {
+        System.out.println("\nPossible commands: " +
+                "\n- 'start -timername-' to start new timer" +
+                "\n- 'stop -timername-' to stop a timer " +
+                "\n- 'check' to display all timers" +
+                "\n- 'check -timername-' to check specific timer" +
+                "\n- 'exit' to finish\n");
     }
 
     @Override
