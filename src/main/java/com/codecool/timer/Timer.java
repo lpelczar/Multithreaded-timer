@@ -51,6 +51,6 @@ public class Timer implements Runnable {
 
     @Override
     public String toString() {
-        return String.format("Name: %s, ThreadId: %d Seconds: %d", name, id, timeElapsed);
+        return String.format("Name: %s, ThreadId: %d, Seconds: %d", name, id, timeElapsed);
     }
 }

@@ -13,4 +13,5 @@ public interface TimerView {
     void displayPossibleOptions();
     void displayTimerCreated(String timerName);
     void displayTimerStopped(String timerName);
+    void displayGoodbyeMessage();
 }

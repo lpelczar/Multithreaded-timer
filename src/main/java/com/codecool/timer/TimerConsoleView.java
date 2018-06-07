@@ -23,12 +23,17 @@ public class TimerConsoleView implements TimerView {
 
     @Override
     public void displayTimerCreated(String name) {
-        System.out.println("Timer with name: " + name + " successfully created!");
+        System.out.println("Timer with name '" + name + "' successfully created!");
     }
 
     @Override
     public void displayTimerStopped(String name) {
-        System.out.println("Timer with name: " + name + " is paused!");
+        System.out.println("Timer with name '" + name + "' is paused!");
+    }
+
+    @Override
+    public void displayGoodbyeMessage() {
+        System.out.println("Bye bye!");
     }
 
     @Override
@@ -55,6 +60,6 @@ public class TimerConsoleView implements TimerView {
 
     @Override
     public void displayTimerStartedMessage(String name) {
-        System.out.println("Timer with name: " + name + " started again!");
+        System.out.println("Timer with name '" + name + "' started again!");
     }
 }

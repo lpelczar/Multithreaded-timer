@@ -26,6 +26,7 @@ class TimerController {
                 timerView.displayPossibleOptions();
             } else if (command.trim().equalsIgnoreCase(TimerCommand.EXIT.toString())) {
                 isAppRunning = false;
+                timerView.displayGoodbyeMessage();
             } else if (command.trim().equalsIgnoreCase(TimerCommand.CHECK.toString())) {
                 timerView.displayTimersData(timers);
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.CHECK.toString()))  {
