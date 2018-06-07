@@ -8,4 +8,5 @@ public interface TimerView {
     void displayTimersData(List<Timer> timers);
     void displayWrongInputError();
     void displayNoSuchTimerError();
+    void displayTimerWithThatNameIsAlreadyRunningError();
 }

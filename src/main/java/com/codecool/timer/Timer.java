@@ -19,6 +19,10 @@ public class Timer implements Runnable {
         return name;
     }
 
+    public AtomicBoolean getIsRunning() {
+        return isRunning;
+    }
+
     @Override
     public void run() {
         double startingNanoTime = System.nanoTime();

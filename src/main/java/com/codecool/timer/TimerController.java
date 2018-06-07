@@ -1,8 +1,9 @@
 package com.codecool.timer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 class TimerController {
 
@@ -30,64 +31,75 @@ class TimerController {
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.STOP.toString())) {
                 stopTimer(command);
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.START.toString())) {
-
-                // Resume, there is a thread with given name, there is a active thread with given name
-                startNewTimer(command);
+                startTimer(command);
             }
         }
         System.exit(0);
     }
 
     private void stopTimer(String command) {
-        String commandValue = InputUtils.getCommandValue(command);
-        if (commandValue == null || commandValue.isEmpty()) {
+        String timerName = InputUtils.getCommandValue(command);
+        if (timerName == null || timerName.isEmpty()) {
             timerView.displayWrongInputError();
-            return;
-        } else if (getTimersByName(commandValue).isEmpty()) {
-            timerView.displayNoSuchTimerError();
             return;
         }
 
-        List<Timer> timersList = getTimersByName(commandValue);
-        for (Timer timer : timersList) {
-            for (Thread thread : getThreadsByName(timer.getName())) {
-                thread.interrupt();
-            }
+        Optional<Thread> thread = getThreadByName(timerName);
+        if (thread.isPresent()) {
+            thread.get().interrupt();
+        } else {
+            timerView.displayNoSuchTimerError();
         }
     }
 
     private void showTimerData(String command) {
-        String commandValue = InputUtils.getCommandValue(command);
-        if (commandValue == null || commandValue.isEmpty()) {
+        String timerName = InputUtils.getCommandValue(command);
+        if (timerName == null || timerName.isEmpty()) {
             timerView.displayWrongInputError();
             return;
         }
 
-        List<Timer> filteredTimers = getTimersByName(commandValue);
-        timerView.displayTimersData(filteredTimers);
+        getTimerByName(timerName).ifPresent(x -> timerView.displayTimersData(Collections.singletonList(x)));
     }
 
-    private List<Timer> getTimersByName(String name) {
+    private Optional<Timer> getTimerByName(String name) {
         return timers.stream()
                 .filter(x -> x.getName().toLowerCase().equals(name.toLowerCase()))
-                .collect(Collectors.toList());
+                .findFirst();
     }
 
-    private List<Thread> getThreadsByName(String name) {
+    private Optional<Thread> getThreadByName(String name) {
         return threads.stream()
                 .filter(x -> x.getName().toLowerCase().equals(name.toLowerCase()))
-                .collect(Collectors.toList());
+                .findFirst();
     }
 
-    private void startNewTimer(String command) {
-        String commandValue = InputUtils.getCommandValue(command);
-        if (commandValue == null || commandValue.isEmpty()) {
+    private void startTimer(String command) {
+        String timerName = InputUtils.getCommandValue(command);
+        if (timerName == null || timerName.isEmpty()) {
             timerView.displayWrongInputError();
             return;
         }
 
-        Timer timer = new Timer(commandValue);
-        Thread thread = new Thread(timer, commandValue);
+        Optional<Timer> timer = getTimerByName(timerName);
+        if (timer.isPresent()) {
+            if (!isRunning(timer.get())) {
+                startStoppedTimer();
+            } else {
+                timerView.displayTimerWithThatNameIsAlreadyRunningError();
+            }
+        } else {
+            createNewTimer(timerName);
+        }
+    }
+
+    private boolean isRunning(Timer timer) {
+        return timer.getIsRunning().get();
+    }
+
+    private void createNewTimer(String timerName) {
+        Timer timer = new Timer(timerName);
+        Thread thread = new Thread(timer, timerName);
         threads.add(thread);
         timers.add(timer);
         thread.start();

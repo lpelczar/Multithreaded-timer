@@ -27,4 +27,9 @@ public class TimerConsoleView implements TimerView {
     public void displayNoSuchTimerError() {
         System.out.println("There is no timer with given name!");
     }
+
+    @Override
+    public void displayTimerWithThatNameIsAlreadyRunningError() {
+        System.out.println("Timer with that name is already running!");
+    }
 }
