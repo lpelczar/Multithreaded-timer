@@ -1,8 +1,13 @@
 package com.codecool.timer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class TimerController {
 
     private TimerView timerView;
+    private final List<Runnable> timers = new ArrayList<>();
+    private final List<Thread> threads = new ArrayList<>();
 
     TimerController(TimerView timerView) {
         this.timerView = timerView;
@@ -15,16 +20,18 @@ class TimerController {
         while (isAppRunning) {
             command = timerView.getCommand();
 
-            if (command.trim().equalsIgnoreCase("exit")) {
+            if (command.trim().equalsIgnoreCase(TimerCommand.EXIT.toString())) {
                 isAppRunning = false;
-            } else if (command.trim().equalsIgnoreCase("check")) {
-                // Print all timers data
-            } else if (command.trim().toLowerCase().startsWith("check"))  {
-                // Print specific timer data
-            } else if (command.trim().toLowerCase().startsWith("stop")) {
-                // Stop timer
-            } else if (command.trim().toLowerCase().startsWith("start")) {
-                // Start the timer
+            } else if (command.trim().equalsIgnoreCase(TimerCommand.CHECK.toString())) {
+                System.out.println(timers);
+            } else if (command.trim().toLowerCase().startsWith(TimerCommand.CHECK.toString()))  {
+            } else if (command.trim().toLowerCase().startsWith(TimerCommand.STOP.toString())) {
+            } else if (command.trim().toLowerCase().startsWith(TimerCommand.START.toString())) {
+                Timer timer = new Timer("blabla");
+                Thread thread = new Thread(timer);
+                threads.add(thread);
+                timers.add(timer);
+                thread.start();
             }
         }
     }
