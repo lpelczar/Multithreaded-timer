@@ -1,12 +1,14 @@
 package com.codecool.timer;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Timer implements Runnable {
 
     private final int id;
     private static int nextId = 0;
     private final String name;
-    private double startingNanoTime;
     private double timeElapsed;
+    private AtomicBoolean isRunning = new AtomicBoolean(true);
 
     Timer(String name) {
         this.id = ++nextId;
@@ -19,11 +21,15 @@ public class Timer implements Runnable {
 
     @Override
     public void run() {
-        startingNanoTime = System.nanoTime();
-        while (true) {
+        double startingNanoTime = System.nanoTime();
+        while (isRunning.get()) {
             double currentNanoTime = System.nanoTime();
             timeElapsed = timeElapsed + currentNanoTime - startingNanoTime;
             startingNanoTime = currentNanoTime;
+
+            if (Thread.interrupted()) {
+                isRunning.set(false);
+            }
         }
     }
 

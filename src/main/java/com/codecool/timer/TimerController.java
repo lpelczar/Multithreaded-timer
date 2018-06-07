@@ -28,8 +28,30 @@ class TimerController {
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.CHECK.toString()))  {
                 showTimerData(command);
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.STOP.toString())) {
+                stopTimer(command);
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.START.toString())) {
+
+                // Resume, there is a thread with given name, there is a active thread with given name
                 startNewTimer(command);
+            }
+        }
+        System.exit(0);
+    }
+
+    private void stopTimer(String command) {
+        String commandValue = InputUtils.getCommandValue(command);
+        if (commandValue == null || commandValue.isEmpty()) {
+            timerView.displayWrongInputError();
+            return;
+        } else if (getTimersByName(commandValue).isEmpty()) {
+            timerView.displayNoSuchTimerError();
+            return;
+        }
+
+        List<Timer> timersList = getTimersByName(commandValue);
+        for (Timer timer : timersList) {
+            for (Thread thread : getThreadsByName(timer.getName())) {
+                thread.interrupt();
             }
         }
     }
@@ -41,10 +63,20 @@ class TimerController {
             return;
         }
 
-        List<Timer> filteredTimers = timers.stream()
-                .filter(x -> x.getName().toLowerCase().equals(commandValue.toLowerCase()))
-                .collect(Collectors.toList());
+        List<Timer> filteredTimers = getTimersByName(commandValue);
         timerView.displayTimersData(filteredTimers);
+    }
+
+    private List<Timer> getTimersByName(String name) {
+        return timers.stream()
+                .filter(x -> x.getName().toLowerCase().equals(name.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    private List<Thread> getThreadsByName(String name) {
+        return threads.stream()
+                .filter(x -> x.getName().toLowerCase().equals(name.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     private void startNewTimer(String command) {
@@ -55,7 +87,7 @@ class TimerController {
         }
 
         Timer timer = new Timer(commandValue);
-        Thread thread = new Thread(timer);
+        Thread thread = new Thread(timer, commandValue);
         threads.add(thread);
         timers.add(timer);
         thread.start();

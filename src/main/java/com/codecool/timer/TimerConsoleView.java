@@ -22,4 +22,9 @@ public class TimerConsoleView implements TimerView {
     public void displayWrongInputError() {
         System.out.println("Wrong input. Try again!");
     }
+
+    @Override
+    public void displayNoSuchTimerError() {
+        System.out.println("There is no timer with given name!");
+    }
 }

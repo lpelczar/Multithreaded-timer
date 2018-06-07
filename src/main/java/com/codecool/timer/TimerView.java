@@ -7,4 +7,5 @@ public interface TimerView {
     String getCommand();
     void displayTimersData(List<Timer> timers);
     void displayWrongInputError();
+    void displayNoSuchTimerError();
 }
