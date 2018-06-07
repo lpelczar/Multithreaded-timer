@@ -2,18 +2,21 @@ package com.codecool.timer;
 
 class TimerController {
 
-    void start() {
+    private TimerView timerView;
 
+    TimerController(TimerView timerView) {
+        this.timerView = timerView;
+    }
+
+    void start() {
         String command;
         boolean isAppRunning = true;
 
         while (isAppRunning) {
-            timerView.clear();
             command = timerView.getCommand();
 
             if (command.trim().equalsIgnoreCase("exit")) {
-                System.out.println("Bye bye!");
-                System.exit(0);
+                isAppRunning = false;
             } else if (command.trim().equalsIgnoreCase("check")) {
                 // Print all timers data
             } else if (command.trim().toLowerCase().startsWith("check"))  {
