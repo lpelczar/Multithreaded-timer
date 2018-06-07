@@ -49,6 +49,7 @@ class TimerController {
         Optional<Thread> thread = getThreadByName(timerName);
         if (thread.isPresent()) {
             thread.get().interrupt();
+            timerView.displayTimerStopped(timerName);
         } else {
             timerView.displayNoSuchTimerError();
         }

@@ -27,6 +27,11 @@ public class TimerConsoleView implements TimerView {
     }
 
     @Override
+    public void displayTimerStopped(String name) {
+        System.out.println("Timer with name: " + name + " is paused!");
+    }
+
+    @Override
     public void displayTimersData(List<Timer> timers) {
         for (Timer timer : timers) {
             System.out.println(timer);
