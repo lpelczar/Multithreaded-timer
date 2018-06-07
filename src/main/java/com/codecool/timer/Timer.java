@@ -13,6 +13,10 @@ public class Timer implements Runnable {
         this.name = name;
     }
 
+    String getName() {
+        return name;
+    }
+
     @Override
     public void run() {
         startingNanoTime = System.nanoTime();

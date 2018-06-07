@@ -2,6 +2,7 @@ package com.codecool.timer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class TimerController {
 
@@ -25,14 +26,38 @@ class TimerController {
             } else if (command.trim().equalsIgnoreCase(TimerCommand.CHECK.toString())) {
                 timerView.displayTimersData(timers);
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.CHECK.toString()))  {
+                showTimerData(command);
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.STOP.toString())) {
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.START.toString())) {
-                Timer timer = new Timer("blabla");
-                Thread thread = new Thread(timer);
-                threads.add(thread);
-                timers.add(timer);
-                thread.start();
+                startNewTimer(command);
             }
         }
+    }
+
+    private void showTimerData(String command) {
+        String commandValue = InputUtils.getCommandValue(command);
+        if (commandValue == null || commandValue.isEmpty()) {
+            timerView.displayWrongInputError();
+            return;
+        }
+
+        List<Timer> filteredTimers = timers.stream()
+                .filter(x -> x.getName().toLowerCase().equals(commandValue.toLowerCase()))
+                .collect(Collectors.toList());
+        timerView.displayTimersData(filteredTimers);
+    }
+
+    private void startNewTimer(String command) {
+        String commandValue = InputUtils.getCommandValue(command);
+        if (commandValue == null || commandValue.isEmpty()) {
+            timerView.displayWrongInputError();
+            return;
+        }
+
+        Timer timer = new Timer(commandValue);
+        Thread thread = new Thread(timer);
+        threads.add(thread);
+        timers.add(timer);
+        thread.start();
     }
 }

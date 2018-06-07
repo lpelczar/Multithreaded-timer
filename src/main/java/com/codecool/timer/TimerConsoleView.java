@@ -17,4 +17,9 @@ public class TimerConsoleView implements TimerView {
             System.out.println(timer);
         }
     }
+
+    @Override
+    public void displayWrongInputError() {
+        System.out.println("Wrong input. Try again!");
+    }
 }
