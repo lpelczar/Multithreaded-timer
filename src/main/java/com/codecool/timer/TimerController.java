@@ -6,7 +6,7 @@ import java.util.List;
 class TimerController {
 
     private TimerView timerView;
-    private final List<Runnable> timers = new ArrayList<>();
+    private final List<Timer> timers = new ArrayList<>();
     private final List<Thread> threads = new ArrayList<>();
 
     TimerController(TimerView timerView) {
@@ -23,7 +23,7 @@ class TimerController {
             if (command.trim().equalsIgnoreCase(TimerCommand.EXIT.toString())) {
                 isAppRunning = false;
             } else if (command.trim().equalsIgnoreCase(TimerCommand.CHECK.toString())) {
-                System.out.println(timers);
+                timerView.displayTimersData(timers);
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.CHECK.toString()))  {
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.STOP.toString())) {
             } else if (command.trim().toLowerCase().startsWith(TimerCommand.START.toString())) {
