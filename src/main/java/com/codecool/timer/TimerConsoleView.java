@@ -32,4 +32,9 @@ public class TimerConsoleView implements TimerView {
     public void displayTimerWithThatNameIsAlreadyRunningError() {
         System.out.println("Timer with that name is already running!");
     }
+
+    @Override
+    public void displayTimerStartedMessage(String name) {
+        System.out.println("Timer with name: " + name + " started again!");
+    }
 }

@@ -9,4 +9,5 @@ public interface TimerView {
     void displayWrongInputError();
     void displayNoSuchTimerError();
     void displayTimerWithThatNameIsAlreadyRunningError();
+    void displayTimerStartedMessage(String name);
 }

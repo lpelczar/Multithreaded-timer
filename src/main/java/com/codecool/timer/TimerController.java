@@ -83,8 +83,8 @@ class TimerController {
 
         Optional<Timer> timer = getTimerByName(timerName);
         if (timer.isPresent()) {
-            if (!isRunning(timer.get())) {
-                startStoppedTimer();
+            if (timer.get().isPaused()) {
+                startStoppedTimer(timer.get());
             } else {
                 timerView.displayTimerWithThatNameIsAlreadyRunningError();
             }
@@ -93,8 +93,9 @@ class TimerController {
         }
     }
 
-    private boolean isRunning(Timer timer) {
-        return timer.getIsRunning().get();
+    private void startStoppedTimer(Timer timer) {
+        timer.resume();
+        timerView.displayTimerStartedMessage(timer.getName());
     }
 
     private void createNewTimer(String timerName) {
