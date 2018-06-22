@@ -6,8 +6,12 @@ public class Timer implements Runnable {
     private final int id;
     private static int nextId = 0;
     private final String name;
-    private long timeElapsed;
+    private double timeElapsed;
+    private double timePaused;
+    private long pauseTime;
     private boolean paused = false;
+
+    private long startingTime;
 
     Timer(String name) {
         this.id = ++nextId;
@@ -20,10 +24,12 @@ public class Timer implements Runnable {
 
     @Override
     public void run() {
+
+        startingTime = System.nanoTime();
+
         while (true) {
             try {
                 Thread.sleep(1000);
-                timeElapsed++;
             } catch (InterruptedException e) {
                 pause();
             }
@@ -32,6 +38,7 @@ public class Timer implements Runnable {
 
     private void pause() {
         paused = true;
+        pauseTime = System.nanoTime();
         while (paused) {
             try {
                 Thread.sleep(1000);
@@ -39,18 +46,28 @@ public class Timer implements Runnable {
                 e.printStackTrace();
             }
         }
+        timePaused = timePaused + (System.nanoTime() - pauseTime) / 1000000000.0;
     }
 
-    void resume() {
+    synchronized void resume() {
         paused = false;
     }
 
-    boolean isPaused() {
+    synchronized boolean isPaused() {
         return paused;
     }
 
     @Override
     public String toString() {
-        return String.format("Name: %s, ThreadId: %d, Seconds: %d", name, id, timeElapsed);
+        calculateCurrentTime();
+        return String.format("Name: %s, ThreadId: %d, Seconds: %.2f", name, id, timeElapsed);
+    }
+
+    private void calculateCurrentTime() {
+        if (isPaused()) {
+            timeElapsed = (pauseTime - startingTime) / 1000000000.0 - timePaused;
+        } else {
+            timeElapsed = (System.nanoTime() - startingTime) / 1000000000.0 - timePaused;
+        }
     }
 }
